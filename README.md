@@ -29,7 +29,7 @@ Master’s student @ Whuhan University of Technology | Fullstack dev & Maintaine
 
 <!-- [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=jcbl1)](https://github.com/anuraghazra/github-readme-stats) -->
 
-[![GitHub Streak](https://streak-stats.demolab.com/?user=jcbl1)](https://git.io/streak-stats)
+[![GitHub Streak](https://streak-stats.demolab.com?user=jcbl1&theme=one-dark-pro)](https://git.io/streak-stats)
 
 ![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=jcbl1&layout=compact)
 
