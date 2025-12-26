@@ -13,14 +13,15 @@
     <img src="https://img.shields.io/badge/docker-darkblue?logo=docker&logoColor=white" alt="android badge" />
 </div>
 
-Master’s student @ Whuhan University of Technology | Android Dev & Maintainer @ our lab | 🚀 Passionate about cutting-edge tech & open-source
+Master’s student @ Whuhan University of Technology | Fullstack dev & Maintainer @ our lab | 🚀 Passionate about cutting-edge tech & open-source
 
 ---
 
 ## Featured projects
 
+- [chat-gui](https://github.com/jcbl1/chat-gui)
 - [food-assist](https://github.com/jcbl1/food-assist)
-- [tiktok-ugc-finder](https://github.com/jcbl1/tiktok-ugc-finder)
+<!-- - [tiktok-ugc-finder](https://github.com/jcbl1/tiktok-ugc-finder) -->
 
 ## Stats
 
