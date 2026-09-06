@@ -1,8 +1,6 @@
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0ea5e9,100:6366f1&height=170&section=header&text=jcbl1&fontSize=60&fontColor=ffffff&fontAlignY=32&desc=Welcome%20to%20my%20GitHub%20profile&descSize=18&descAlignY=58&animation=fadeIn" alt="header" />
-
 <div align="center">
     <a href="https://blog.yelr.de">
-        <img src="https://avatars.githubusercontent.com/u/51892015?v=4" width=120 alt="jcbl1" />
+        <img src="https://avatars.githubusercontent.com/u/51892015?v=4" width=140 alt="jcbl1" />
     </a>
 </div>
 
@@ -28,27 +26,69 @@
 <div align="center">
     <table>
         <tr>
-            <td>
-                <img src="https://github-readme-stats.vercel.app/api/pin/?username=jcbl1&repo=walls-web&theme=onedark" alt="walls-web" />
+            <td align="center" width="50%">
+                <a href="https://github.com/jcbl1/walls-web">
+                    <img src="https://img.shields.io/badge/walls--web-1e2229?style=flat-square&logo=github&logoColor=white" alt="walls-web" />
+                </a>
+                <br/>
+                <img src="https://img.shields.io/github/stars/jcbl1/walls-web?style=flat-square&logo=github&labelColor=1e2229&color=58a6ff" alt="stars" />
+                <img src="https://img.shields.io/badge/JavaScript-f1e05a?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript" />
+                <br/>
+                <sub>Static website for browsing wallpapers</sub>
             </td>
-            <td>
-                <img src="https://github-readme-stats.vercel.app/api/pin/?username=jcbl1&repo=linkding-cn&theme=onedark" alt="linkding-cn" />
+            <td align="center" width="50%">
+                <a href="https://github.com/jcbl1/linkding-cn">
+                    <img src="https://img.shields.io/badge/linkding--cn-1e2229?style=flat-square&logo=github&logoColor=white" alt="linkding-cn" />
+                </a>
+                <br/>
+                <img src="https://img.shields.io/github/stars/jcbl1/linkding-cn?style=flat-square&logo=github&labelColor=1e2229&color=58a6ff" alt="stars" />
+                <img src="https://img.shields.io/badge/Python-3572A5?style=flat-square&logo=python&logoColor=white" alt="Python" />
+                <br/>
+                <sub>linkding with extra themes and theme-selection tweaks</sub>
             </td>
         </tr>
         <tr>
-            <td>
-                <img src="https://github-readme-stats.vercel.app/api/pin/?username=jcbl1&repo=frieren-pet&theme=onedark" alt="frieren-pet" />
+            <td align="center" width="50%">
+                <a href="https://github.com/jcbl1/frieren-pet">
+                    <img src="https://img.shields.io/badge/frieren--pet-1e2229?style=flat-square&logo=github&logoColor=white" alt="frieren-pet" />
+                </a>
+                <br/>
+                <img src="https://img.shields.io/github/stars/jcbl1/frieren-pet?style=flat-square&logo=github&labelColor=1e2229&color=58a6ff" alt="stars" />
+                <img src="https://img.shields.io/badge/Rust-dea584?style=flat-square&logo=rust&logoColor=black" alt="Rust" />
+                <br/>
+                <sub>Desktop pet toy built with Rust</sub>
             </td>
-            <td>
-                <img src="https://github-readme-stats.vercel.app/api/pin/?username=jcbl1&repo=chat-gui&theme=onedark" alt="chat-gui" />
+            <td align="center" width="50%">
+                <a href="https://github.com/jcbl1/chat-gui">
+                    <img src="https://img.shields.io/badge/chat--gui-1e2229?style=flat-square&logo=github&logoColor=white" alt="chat-gui" />
+                </a>
+                <br/>
+                <img src="https://img.shields.io/github/stars/jcbl1/chat-gui?style=flat-square&logo=github&labelColor=1e2229&color=58a6ff" alt="stars" />
+                <img src="https://img.shields.io/badge/Vue-41b883?style=flat-square&logo=vuedotjs&logoColor=white" alt="Vue" />
+                <br/>
+                <sub>AI chat-bot store with local and API backends</sub>
             </td>
         </tr>
         <tr>
-            <td>
-                <img src="https://github-readme-stats.vercel.app/api/pin/?username=jcbl1&repo=food-assist&theme=onedark" alt="food-assist" />
+            <td align="center" width="50%">
+                <a href="https://github.com/jcbl1/food-assist">
+                    <img src="https://img.shields.io/badge/food--assist-1e2229?style=flat-square&logo=github&logoColor=white" alt="food-assist" />
+                </a>
+                <br/>
+                <img src="https://img.shields.io/github/stars/jcbl1/food-assist?style=flat-square&logo=github&labelColor=1e2229&color=58a6ff" alt="stars" />
+                <img src="https://img.shields.io/badge/Vue-41b883?style=flat-square&logo=vuedotjs&logoColor=white" alt="Vue" />
+                <br/>
+                <sub>Food assistance web app</sub>
             </td>
-            <td>
-                <img src="https://github-readme-stats.vercel.app/api/pin/?username=jcbl1&repo=ollama-proxy&theme=onedark" alt="ollama-proxy" />
+            <td align="center" width="50%">
+                <a href="https://github.com/jcbl1/ollama-proxy">
+                    <img src="https://img.shields.io/badge/ollama--proxy-1e2229?style=flat-square&logo=github&logoColor=white" alt="ollama-proxy" />
+                </a>
+                <br/>
+                <img src="https://img.shields.io/github/stars/jcbl1/ollama-proxy?style=flat-square&logo=github&labelColor=1e2229&color=58a6ff" alt="stars" />
+                <img src="https://img.shields.io/badge/Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go" />
+                <br/>
+                <sub>Ollama proxy for VS Code Copilot</sub>
             </td>
         </tr>
     </table>
@@ -56,19 +96,10 @@
 
 ---
 
-<h2 align="center">GitHub Stats</h2>
+<h2 align="center">GitHub Activity</h2>
 
 <div align="center">
-    <img height="165" src="https://github-readme-stats.vercel.app/api?username=jcbl1&show_icons=true&hide_border=true&include_all_commits=true&count_private=true&theme=onedark" alt="GitHub stats" />
-    <img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=jcbl1&layout=compact&hide_border=true&theme=onedark" alt="Top languages" />
-    <br/>
     <img width="70%" src="https://streak-stats.demolab.com?user=jcbl1&theme=one-dark-pro&hide_border=true" alt="GitHub streak" />
-    <br/>
-    <img width="95%" src="https://github-readme-activity-graph.vercel.app/graph?username=jcbl1&theme=onedark&hide_border=true&area=true&bg_color=1e2229" alt="Activity graph" />
-</div>
-
-<div align="center">
-    <img width="100%" src="https://github-profile-trophy.vercel.app/?username=jcbl1&theme=onedark&no-frame=true&row=1&column=7&margin-w=8" alt="Trophy" />
 </div>
 
 <div align="center">
