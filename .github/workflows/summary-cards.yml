@@ -1,0 +1,62 @@
+name: Profile Summary Cards
+
+on:
+  schedule:
+    - cron: "23 1 * * *"
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # The card generator wipes its output directory on every run, so we
+      # generate one theme, stash it, generate the second theme, then merge.
+      - name: Generate light-theme cards
+        uses: vn7n24fzkq/github-profile-summary-cards@release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          USERNAME: ${{ github.repository_owner }}
+          THEME: github
+          UTC_OFFSET: 8
+          ANIMATION: load
+          AUTO_PUSH: "false"
+
+      - name: Stash light-theme cards
+        run: cp -r profile-summary-card-output /tmp/cards-light
+
+      - name: Generate dark-theme cards
+        uses: vn7n24fzkq/github-profile-summary-cards@release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          USERNAME: ${{ github.repository_owner }}
+          THEME: github_dark
+          UTC_OFFSET: 8
+          ANIMATION: load
+          AUTO_PUSH: "false"
+
+      - name: Merge both themes
+        run: |
+          mkdir merged
+          cp -r /tmp/cards-light/* merged/
+          cp -r profile-summary-card-output/* merged/
+          rm -rf profile-summary-card-output
+          mv merged profile-summary-card-output
+
+      - name: Push cards to the profile-cards branch
+        uses: crazy-max/ghaction-github-pages@v4
+        with:
+          target_branch: profile-cards
+          build_dir: profile-summary-card-output
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
