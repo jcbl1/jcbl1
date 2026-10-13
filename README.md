@@ -127,24 +127,20 @@
 <div align="center">
 
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-cards/github_dark/0-profile-details.svg" />
-    <img src="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-cards/github/0-profile-details.svg" alt="Profile details" width="100%" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/dark/overview.svg" />
+    <img src="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/light/overview.svg" alt="GitHub overview" width="100%" />
   </picture>
 
   <br/>
 
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-cards/github_dark/3-stats.svg" />
-    <img src="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-cards/github/3-stats.svg" alt="GitHub stats" width="49%" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/dark/languages.svg" />
+    <img src="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/light/languages.svg" alt="Most used languages" width="49%" />
   </picture>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-cards/github_dark/1-repos-per-language.svg" />
-    <img src="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-cards/github/1-repos-per-language.svg" alt="Top languages" width="49%" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/dark/streak.svg" />
+    <img src="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/light/streak.svg" alt="Contribution streak" width="49%" />
   </picture>
-
-  <br/>
-
-  <img width="70%" src="https://streak-stats.demolab.com?user=jcbl1&theme=one-dark-pro&hide_border=true" alt="GitHub streak" />
 
 </div>
 
