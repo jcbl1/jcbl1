@@ -170,11 +170,14 @@ def compute_metrics(user, token):
 
 
 # --------------------------------------------------------------------------- svg
-def card_open(w, h, t):
+def svg_open(w, h):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" '
             f'viewBox="0 0 {w} {h}" role="img">'
-            f'<style>text{{font-family:{FONT}}}</style>'
-            f'<rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" '
+            f'<style>text{{font-family:{FONT}}}</style>')
+
+
+def card_rect(w, h, t):
+    return (f'<rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" '
             f'fill="{t["bg"]}" stroke="{t["border"]}"/>')
 
 
@@ -201,7 +204,7 @@ def spark_path(pts, x0, y0, w, h):
 
 def svg_overview(t, data):
     w, h = 870, 190
-    s = [card_open(w, h, t), label(30, 42, "GITHUB OVERVIEW", t)]
+    s = [svg_open(w, h), card_rect(w, h, t), label(30, 42, "GITHUB OVERVIEW", t)]
     x = 30
     for k, v in data["overview"]:
         s.append(f'<text x="{x}" y="112" font-size="32" font-weight="700" '
@@ -224,9 +227,9 @@ def svg_overview(t, data):
     return "".join(s)
 
 
-def svg_languages(t, data):
+def languages_body(t, data):
     w, h = 420, 190
-    s = [card_open(w, h, t), label(26, 38, "MOST USED LANGUAGES", t)]
+    s = [card_rect(w, h, t), label(26, 38, "MOST USED LANGUAGES", t)]
     langs = data["languages"]
     total = sum(p for _, p in langs) or 1
     bx, by, bw, bh = 26, 56, w - 52, 10
@@ -248,13 +251,12 @@ def svg_languages(t, data):
         s.append(f'<text x="{ox + 18}" y="{oy}" font-size="13" fill="{t["value"]}">{name}</text>')
         s.append(f'<text x="{ox + col_w - 14}" y="{oy}" text-anchor="end" font-size="12.5" '
                  f'fill="{t["label"]}">{p:.1f}%</text>')
-    s.append('</svg>')
     return "".join(s)
 
 
-def svg_streak(t, data):
+def streak_body(t, data):
     w, h = 420, 190
-    s = [card_open(w, h, t), label(26, 38, "CONTRIBUTION STREAK", t)]
+    s = [card_rect(w, h, t), label(26, 38, "CONTRIBUTION STREAK", t)]
     thirds = [26 + (w - 52) / 6, 26 + (w - 52) / 2, 26 + (w - 52) * 5 / 6]
     for c in (1, 2):
         xx = 26 + (w - 52) * c / 3
@@ -266,8 +268,19 @@ def svg_streak(t, data):
                  f'font-weight="700" fill="{col}">{v}</text>')
         s.append(f'<text x="{thirds[i]:.1f}" y="142" text-anchor="middle" font-size="12.5" '
                  f'fill="{t["label"]}">{k}</text>')
-    s.append('</svg>')
     return "".join(s)
+
+
+def svg_breakdown(t, data):
+    """Languages + streak on one 870-wide canvas so it aligns exactly with the
+    overview card. Two separately sized images can never line up in a README
+    because percentage widths cannot absorb the whitespace between them."""
+    w, h, gap = 870, 190, 30
+    right = 420 + gap
+    return (svg_open(w, h)
+            + f'<g transform="translate(0,0)">{languages_body(t, data)}</g>'
+            + f'<g transform="translate({right},0)">{streak_body(t, data)}</g>'
+            + '</svg>')
 
 
 # --------------------------------------------------------------------------- run
@@ -275,18 +288,24 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--user", default=os.environ.get("GITHUB_REPOSITORY_OWNER", "jcbl1"))
     ap.add_argument("--out", default="out")
+    ap.add_argument("--data", help="render from a metrics JSON file instead of the API")
     args = ap.parse_args()
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
 
-    print(f"collecting metrics for {args.user} ...")
-    data = compute_metrics(args.user, token)
+    if args.data:
+        with open(args.data) as f:
+            data = json.load(f)
+        print(f"loaded metrics from {args.data}")
+    else:
+        print(f"collecting metrics for {args.user} ...")
+        data = compute_metrics(args.user, token)
     print(f"  repos={data['overview'][0][1]} stars={data['overview'][1][1]} "
           f"followers={data['overview'][2][1]} contributions={data['overview'][3][1]}")
     print(f"  languages={[n for n, _ in data['languages']]}")
     print(f"  spark={data['spark']}")
     print(f"  streak={data['streak']}")
 
-    builders = {"overview": svg_overview, "languages": svg_languages, "streak": svg_streak}
+    builders = {"overview": svg_overview, "breakdown": svg_breakdown}
     for theme, t in THEMES.items():
         d = os.path.join(args.out, theme)
         os.makedirs(d, exist_ok=True)

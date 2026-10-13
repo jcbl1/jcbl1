@@ -134,12 +134,8 @@
   <br/>
 
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/dark/languages.svg" />
-    <img src="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/light/languages.svg" alt="Most used languages" width="49%" />
-  </picture>
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/dark/streak.svg" />
-    <img src="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/light/streak.svg" alt="Contribution streak" width="49%" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/dark/breakdown.svg" />
+    <img src="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/light/breakdown.svg" alt="Most used languages and contribution streak" width="100%" />
   </picture>
 
 </div>
