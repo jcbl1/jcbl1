@@ -127,15 +127,8 @@
 <div align="center">
 
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/dark/overview.svg" />
-    <img src="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/light/overview.svg" alt="GitHub overview" width="100%" />
-  </picture>
-
-  <br/>
-
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/dark/breakdown.svg" />
-    <img src="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/light/breakdown.svg" alt="Most used languages and contribution streak" width="100%" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/dark/stats.svg" />
+    <img src="https://raw.githubusercontent.com/jcbl1/jcbl1/profile-stats/light/stats.svg" alt="GitHub stats" width="100%" />
   </picture>
 
 </div>

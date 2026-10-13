@@ -202,9 +202,9 @@ def spark_path(pts, x0, y0, w, h):
     return d, area, xy
 
 
-def svg_overview(t, data):
+def overview_body(t, data):
     w, h = 870, 190
-    s = [svg_open(w, h), card_rect(w, h, t), label(30, 42, "GITHUB OVERVIEW", t)]
+    s = [card_rect(w, h, t), label(30, 42, "GITHUB OVERVIEW", t)]
     x = 30
     for k, v in data["overview"]:
         s.append(f'<text x="{x}" y="112" font-size="32" font-weight="700" '
@@ -223,7 +223,6 @@ def svg_overview(t, data):
     s.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="4" fill="{t["accent"]}"/>')
     s.append(f'<text x="{sx + sw}" y="164" text-anchor="end" font-size="12" '
              f'fill="{t["label"]}">contributions · last 12 months</text>')
-    s.append('</svg>')
     return "".join(s)
 
 
@@ -271,16 +270,23 @@ def streak_body(t, data, w=420):
     return "".join(s)
 
 
-def svg_breakdown(t, data, total=870, gap=12):
-    """Languages + streak on one 870-wide canvas so it aligns exactly with the
-    overview card. Two separately sized images can never line up in a README
-    because percentage widths cannot absorb the whitespace between them."""
+def svg_stats(t, data, total=870, gap=20):
+    """All cards on one canvas: the overview row, then the languages/streak row.
+
+    The row gap (vertical) and the card gutter (horizontal) are the *same*
+    value and live in the same SVG, so they always match and both scale with
+    the rendered width. Two separate images can never do this because GitHub
+    strips all CSS (no flex/grid/gap) and the vertical spacing between two
+    images is whatever the README's <br/> happens to produce.
+    """
     h = 190
     w = (total - gap) // 2
     right = w + gap
-    return (svg_open(total, h)
-            + f'<g transform="translate(0,0)">{languages_body(t, data, w)}</g>'
-            + f'<g transform="translate({right},0)">{streak_body(t, data, w)}</g>'
+    bottom = h + gap
+    return (svg_open(total, 2 * h + gap)
+            + f'<g transform="translate(0,0)">{overview_body(t, data)}</g>'
+            + f'<g transform="translate(0,{bottom})">{languages_body(t, data, w)}</g>'
+            + f'<g transform="translate({right},{bottom})">{streak_body(t, data, w)}</g>'
             + '</svg>')
 
 
@@ -306,7 +312,7 @@ def main():
     print(f"  spark={data['spark']}")
     print(f"  streak={data['streak']}")
 
-    builders = {"overview": svg_overview, "breakdown": svg_breakdown}
+    builders = {"stats": svg_stats}
     for theme, t in THEMES.items():
         d = os.path.join(args.out, theme)
         os.makedirs(d, exist_ok=True)
