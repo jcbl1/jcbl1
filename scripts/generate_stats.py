@@ -274,22 +274,22 @@ def streak_body(t, data, w=420):
 
 
 def narrow_overview(t, data):
-    w, h = 870, 115
-    s = [card_rect(w, h, t), label(30, 32, "GITHUB OVERVIEW", t, size=21, spacing=3)]
+    w, h = 870, 138
+    s = [card_rect(w, h, t), label(30, 38, "GITHUB OVERVIEW", t, size=21, spacing=3)]
     xs = [30, 240, 450, 660]
     for i, (k, v) in enumerate(data["overview"]):
-        s.append(f'<text x="{xs[i]}" y="82" font-size="46" font-weight="700" '
+        s.append(f'<text x="{xs[i]}" y="88" font-size="46" font-weight="700" '
                  f'fill="{t["value"]}">{v}</text>')
-        s.append(f'<text x="{xs[i]}" y="106" font-size="24" fill="{t["label"]}">{k}</text>')
+        s.append(f'<text x="{xs[i]}" y="114" font-size="24" fill="{t["label"]}">{k}</text>')
     return "".join(s)
 
 
 def narrow_languages(t, data):
-    w, h = 870, 145
-    s = [card_rect(w, h, t), label(30, 32, "MOST USED LANGUAGES", t, size=21, spacing=3)]
+    w, h = 870, 146
+    s = [card_rect(w, h, t), label(30, 38, "MOST USED LANGUAGES", t, size=21, spacing=3)]
     langs = data["languages"]
     total = sum(p for _, p in langs) or 1
-    bx, by, bw, bh = 30, 48, w - 60, 12
+    bx, by, bw, bh = 30, 60, w - 60, 12
     s.append(f'<defs><clipPath id="nbar"><rect x="{bx}" y="{by}" width="{bw}" '
              f'height="{bh}" rx="6"/></clipPath></defs><g clip-path="url(#nbar)">')
     x = bx
@@ -303,7 +303,7 @@ def narrow_languages(t, data):
     col_w = (w - 60) / cols
     for i, (name, p) in enumerate(langs):
         ox = 30 + (i % cols) * col_w
-        oy = 92 + (i // cols) * 34
+        oy = 104 + (i // cols) * 30
         col = LANG_COLORS.get(name, LANG_FALLBACK)
         s.append(f'<circle cx="{ox + 6}" cy="{oy - 5}" r="6" fill="{col}"/>')
         s.append(f'<text x="{ox + 22}" y="{oy}" font-size="25" fill="{t["value"]}">{name}</text>')
@@ -313,18 +313,18 @@ def narrow_languages(t, data):
 
 
 def narrow_streak(t, data):
-    w, h = 870, 110
-    s = [card_rect(w, h, t), label(30, 32, "CONTRIBUTION STREAK", t, size=21, spacing=3)]
+    w, h = 870, 138
+    s = [card_rect(w, h, t), label(30, 38, "CONTRIBUTION STREAK", t, size=21, spacing=3)]
     thirds = [30 + (w - 60) / 6, 30 + (w - 60) / 2, 30 + (w - 60) * 5 / 6]
     for c in (1, 2):
         xx = 30 + (w - 60) * c / 3
-        s.append(f'<line x1="{xx:.1f}" y1="56" x2="{xx:.1f}" y2="92" '
+        s.append(f'<line x1="{xx:.1f}" y1="64" x2="{xx:.1f}" y2="100" '
                  f'stroke="{t["border"]}"/>')
     for i, (k, v) in enumerate(data["streak"]):
         col = t["accent"] if i == 0 else t["value"]
-        s.append(f'<text x="{thirds[i]:.1f}" y="80" text-anchor="middle" font-size="46" '
+        s.append(f'<text x="{thirds[i]:.1f}" y="88" text-anchor="middle" font-size="46" '
                  f'font-weight="700" fill="{col}">{v}</text>')
-        s.append(f'<text x="{thirds[i]:.1f}" y="103" text-anchor="middle" font-size="24" '
+        s.append(f'<text x="{thirds[i]:.1f}" y="114" text-anchor="middle" font-size="24" '
                  f'fill="{t["label"]}">{k}</text>')
     return "".join(s)
 
@@ -346,17 +346,22 @@ def svg_stats(t, data, total=870, gap=20):
     w = (total - gap) // 2
     right = w + gap
     bottom = h + gap
+    # the mobile layout needs more vertical room than the desktop one, so the
+    # shared canvas is a little taller and the desktop group is centred in it
+    # (its own cards are unchanged).
+    canvas_h = 450
+    top = (canvas_h - (2 * h + gap)) // 2
     wide = (f'<g transform="translate(0,0)">{overview_body(t, data)}</g>'
             + f'<g transform="translate(0,{bottom})">{languages_body(t, data, w)}</g>'
             + f'<g transform="translate({right},{bottom})">{streak_body(t, data, w)}</g>')
 
-    ng = 15
+    ng = 14
     narrow = (f'<g transform="translate(0,0)">{narrow_overview(t, data)}</g>'
-              + f'<g transform="translate(0,{115 + ng})">{narrow_languages(t, data)}</g>'
-              + f'<g transform="translate(0,{115 + ng + 145 + ng})">{narrow_streak(t, data)}</g>')
+              + f'<g transform="translate(0,{138 + ng})">{narrow_languages(t, data)}</g>'
+              + f'<g transform="translate(0,{138 + ng + 146 + ng})">{narrow_streak(t, data)}</g>')
 
-    return (svg_open(total, 2 * h + gap)
-            + f'<g class="wide">{wide}</g>'
+    return (svg_open(total, canvas_h)
+            + f'<g class="wide" transform="translate(0,{top})">{wide}</g>'
             + f'<g class="narrow">{narrow}</g>'
             + '</svg>')
 
