@@ -173,7 +173,10 @@ def compute_metrics(user, token):
 def svg_open(w, h):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" '
             f'viewBox="0 0 {w} {h}" role="img">'
-            f'<style>text{{font-family:{FONT}}}</style>')
+            f'<style>text{{font-family:{FONT}}}'
+            f'.narrow{{display:none}}'
+            f'@media (max-width:560px){{.wide{{display:none}}.narrow{{display:inline}}}}'
+            f'</style>')
 
 
 def card_rect(w, h, t):
@@ -181,9 +184,9 @@ def card_rect(w, h, t):
             f'fill="{t["bg"]}" stroke="{t["border"]}"/>')
 
 
-def label(x, y, s, t):
-    return (f'<text x="{x}" y="{y}" font-size="11" font-weight="600" '
-            f'letter-spacing="2.2" fill="{t["label"]}">{s}</text>')
+def label(x, y, s, t, size=11, spacing=2.2):
+    return (f'<text x="{x}" y="{y}" font-size="{size}" font-weight="600" '
+            f'letter-spacing="{spacing}" fill="{t["label"]}">{s}</text>')
 
 
 def spark_path(pts, x0, y0, w, h):
@@ -270,23 +273,91 @@ def streak_body(t, data, w=420):
     return "".join(s)
 
 
-def svg_stats(t, data, total=870, gap=20):
-    """All cards on one canvas: the overview row, then the languages/streak row.
+def narrow_overview(t, data):
+    w, h = 870, 115
+    s = [card_rect(w, h, t), label(30, 32, "GITHUB OVERVIEW", t, size=21, spacing=3)]
+    xs = [30, 240, 450, 660]
+    for i, (k, v) in enumerate(data["overview"]):
+        s.append(f'<text x="{xs[i]}" y="82" font-size="46" font-weight="700" '
+                 f'fill="{t["value"]}">{v}</text>')
+        s.append(f'<text x="{xs[i]}" y="106" font-size="24" fill="{t["label"]}">{k}</text>')
+    return "".join(s)
 
-    The row gap (vertical) and the card gutter (horizontal) are the *same*
-    value and live in the same SVG, so they always match and both scale with
-    the rendered width. Two separate images can never do this because GitHub
-    strips all CSS (no flex/grid/gap) and the vertical spacing between two
-    images is whatever the README's <br/> happens to produce.
+
+def narrow_languages(t, data):
+    w, h = 870, 145
+    s = [card_rect(w, h, t), label(30, 32, "MOST USED LANGUAGES", t, size=21, spacing=3)]
+    langs = data["languages"]
+    total = sum(p for _, p in langs) or 1
+    bx, by, bw, bh = 30, 48, w - 60, 12
+    s.append(f'<defs><clipPath id="nbar"><rect x="{bx}" y="{by}" width="{bw}" '
+             f'height="{bh}" rx="6"/></clipPath></defs><g clip-path="url(#nbar)">')
+    x = bx
+    for name, p in langs:
+        seg = bw * p / total
+        s.append(f'<rect x="{x:.1f}" y="{by}" width="{seg:.1f}" height="{bh}" '
+                 f'fill="{LANG_COLORS.get(name, LANG_FALLBACK)}"/>')
+        x += seg
+    s.append('</g>')
+    cols = 3
+    col_w = (w - 60) / cols
+    for i, (name, p) in enumerate(langs):
+        ox = 30 + (i % cols) * col_w
+        oy = 92 + (i // cols) * 34
+        col = LANG_COLORS.get(name, LANG_FALLBACK)
+        s.append(f'<circle cx="{ox + 6}" cy="{oy - 5}" r="6" fill="{col}"/>')
+        s.append(f'<text x="{ox + 22}" y="{oy}" font-size="25" fill="{t["value"]}">{name}</text>')
+        s.append(f'<text x="{ox + col_w - 16}" y="{oy}" text-anchor="end" font-size="23" '
+                 f'fill="{t["label"]}">{p:.1f}%</text>')
+    return "".join(s)
+
+
+def narrow_streak(t, data):
+    w, h = 870, 110
+    s = [card_rect(w, h, t), label(30, 32, "CONTRIBUTION STREAK", t, size=21, spacing=3)]
+    thirds = [30 + (w - 60) / 6, 30 + (w - 60) / 2, 30 + (w - 60) * 5 / 6]
+    for c in (1, 2):
+        xx = 30 + (w - 60) * c / 3
+        s.append(f'<line x1="{xx:.1f}" y1="56" x2="{xx:.1f}" y2="92" '
+                 f'stroke="{t["border"]}"/>')
+    for i, (k, v) in enumerate(data["streak"]):
+        col = t["accent"] if i == 0 else t["value"]
+        s.append(f'<text x="{thirds[i]:.1f}" y="80" text-anchor="middle" font-size="46" '
+                 f'font-weight="700" fill="{col}">{v}</text>')
+        s.append(f'<text x="{thirds[i]:.1f}" y="103" text-anchor="middle" font-size="24" '
+                 f'fill="{t["label"]}">{k}</text>')
+    return "".join(s)
+
+
+def svg_stats(t, data, total=870, gap=20):
+    """All cards on one canvas, in two layouts selected by width.
+
+    The .wide group is the 3-across desktop layout; the .narrow group stacks
+    the cards and enlarges the type, and is switched on by an in-SVG media
+    query keyed to the image's own rendered width (verified: an SVG in an
+    <img> matches media queries against its own size, not the page viewport).
+    Both groups share the same canvas height, so the image never reflows.
+
+    The row gap (vertical) and the card gutter (horizontal) use the same
+    value, so they always match and both scale with the width. GitHub strips
+    all CSS, so this is the only way to control it.
     """
     h = 190
     w = (total - gap) // 2
     right = w + gap
     bottom = h + gap
-    return (svg_open(total, 2 * h + gap)
-            + f'<g transform="translate(0,0)">{overview_body(t, data)}</g>'
+    wide = (f'<g transform="translate(0,0)">{overview_body(t, data)}</g>'
             + f'<g transform="translate(0,{bottom})">{languages_body(t, data, w)}</g>'
-            + f'<g transform="translate({right},{bottom})">{streak_body(t, data, w)}</g>'
+            + f'<g transform="translate({right},{bottom})">{streak_body(t, data, w)}</g>')
+
+    ng = 15
+    narrow = (f'<g transform="translate(0,0)">{narrow_overview(t, data)}</g>'
+              + f'<g transform="translate(0,{115 + ng})">{narrow_languages(t, data)}</g>'
+              + f'<g transform="translate(0,{115 + ng + 145 + ng})">{narrow_streak(t, data)}</g>')
+
+    return (svg_open(total, 2 * h + gap)
+            + f'<g class="wide">{wide}</g>'
+            + f'<g class="narrow">{narrow}</g>'
             + '</svg>')
 
 
