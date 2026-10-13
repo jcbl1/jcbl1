@@ -271,7 +271,7 @@ def streak_body(t, data, w=420):
     return "".join(s)
 
 
-def svg_breakdown(t, data, total=870, gap=0):
+def svg_breakdown(t, data, total=870, gap=12):
     """Languages + streak on one 870-wide canvas so it aligns exactly with the
     overview card. Two separately sized images can never line up in a README
     because percentage widths cannot absorb the whitespace between them."""
